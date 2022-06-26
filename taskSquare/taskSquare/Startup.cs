@@ -45,6 +45,12 @@ namespace taskSquare
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/account/Login";
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +70,9 @@ namespace taskSquare
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthorization();
-            app.UseAuthentication();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

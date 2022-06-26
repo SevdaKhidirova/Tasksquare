@@ -9,14 +9,16 @@ using taskSquare.ViewModels;
 
 namespace taskSquare.Controllers
 {
-    public class AccauntController : Controller
+    public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        public AccauntController(UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager)
+        private readonly RoleManager<IdentityRole> roleManager;
+        public AccountController(UserManager<AppUser> _userManager, SignInManager<AppUser> _signInManager, RoleManager<IdentityRole> _roleManager)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            roleManager = _roleManager;
         }
 
         public IActionResult Register()
@@ -38,6 +40,7 @@ namespace taskSquare.Controllers
                 Surname=viewModel.Surname,
                 Email=viewModel.Email,
                 UserName=viewModel.PersonUsername
+                
             };
 
             IdentityResult result = await userManager.CreateAsync(user, viewModel.Password);
@@ -51,7 +54,7 @@ namespace taskSquare.Controllers
                 return View(viewModel);
             }
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Login()
@@ -60,6 +63,7 @@ namespace taskSquare.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -91,7 +95,37 @@ namespace taskSquare.Controllers
                 return View(viewModel);
             }
 
-            return View();
+            if ((await userManager.GetRolesAsync(loginUser)).Count > 0 && ((await userManager.GetRolesAsync(loginUser))[0] == "Admin"))
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
+
+            return RedirectToAction("Index","Home");
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        //public async Task<IActionResult> CreateRoles()
+        //{
+        //    await roleManager.CreateAsync(new IdentityRole() { Name = "Member" });
+        //    await roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
+        //    await roleManager.CreateAsync(new IdentityRole() { Name = "SuperAdmin" });
+
+        //    return Content("Roles Added :)");
+        //}
+
+
+        //public async Task<IActionResult> AddRolesToUsers()
+        //{
+        //    AppUser user = await userManager.FindByNameAsync("Huseyn");
+
+        //    await userManager.AddToRoleAsync(user, "Admin");
+        //    return Content("Ok");
+        //}
     }
 }

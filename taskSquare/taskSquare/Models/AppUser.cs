@@ -10,7 +10,6 @@ namespace taskSquare.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string PersonUserName { get; set; }
 
     }
 }

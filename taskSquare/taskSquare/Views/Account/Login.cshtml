@@ -47,15 +47,15 @@
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <form class="user">
+                                    <form class="user" method="post">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" asp-for="Email" placeholder="Email Adress">
+                                            <input  class="form-control form-control-user" asp-for="Email" placeholder="Email Adress">
                                             <span class="text-danger" asp-validation-for="Email"></span>
                                         </div>
 
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" asp-for="Email" placeholder="Email Adress">
-                                            <span class="text-danger" asp-validation-for="Email"></span>
+                                            <input class="form-control form-control-user" asp-for="Password" placeholder="Password">
+                                            <span class="text-danger" asp-validation-for="Password"></span>
                                         </div>
 
                                         <div class="col-12">
@@ -64,9 +64,9 @@
 
                                         </div>
 
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login
-                                        </a>
+                                        </button>
                                         <hr>
                                         @*<a href="index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
@@ -80,7 +80,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="/accaunt/register">Create an Account!</a>
+                                        <a class="small" href="/account/register">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>
